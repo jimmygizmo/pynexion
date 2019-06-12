@@ -20,14 +20,14 @@ targ2 = {
 }
 
 targ3 = {
-    'name': 'Ninth Device',
-    'code': 'NtDv',
-    'url': 'http://www.ninthdevice.com'
+    'name': 'LA Times News Site',
+    'code': 'LaTm',
+    'url': 'http://www.latimes.com'
 }
 
 targets = [targ1, targ2, targ3]
 
-one_target = targ2
+one_target = targ3
 
 
 async def fetch(session: aiohttp.ClientSession, url: str) -> str:
