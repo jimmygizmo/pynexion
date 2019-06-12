@@ -3,6 +3,8 @@
 # Project-specific Python dependencies
 
 aiohttp
+colorama
+bs4
 
 
 ##
