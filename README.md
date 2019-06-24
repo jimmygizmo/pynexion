@@ -1,2 +1,2 @@
 # pynexion
-Python applications and modules for network communications using HTTP and other protocols.
+Python-centered applications, Docker containers and modules for backend services and communications using protocls like REST and websockets and technologies like Flask, Gunicorn, Nginx, uWSGI Django and related/similar stack components.
