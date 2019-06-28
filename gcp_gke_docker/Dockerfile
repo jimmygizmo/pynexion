@@ -1,41 +1,53 @@
+# Alping is a minimal container so we can keep the image size down for use on
+# our minimal GCP GKE nodes which only have 10G of storage and 0.6G of RAM and
+# which are pre-emptive. These nodes are the most affordable they can be.
+# Alpine includes a minimal POSIX environment. Note that by default Alpine uses
+# musl instead of glibc so some Python wheels won't work without forcing a 
+# recompilation.
 FROM python:3.7-alpine
 
 MAINTAINER Jimmy Gizmo "redacted@redacted.com"
 
-COPY requirements.txt /
+WORKDIR /app
 
+# Taking advantage of layer caching so that Python dependencies are not
+# re-dowloaded and installed every time we make source code changes and rebuild
+# the container. We do this by copying requirements.txt to the container and
+# then running pip against that, rather than just running pip against an
+# external requirements.txt
+COPY requirements.txt /
 RUN pip install -r /requirements.txt
 
-COPY src/ /app
-#COPY . /app  # From earlier version with no src dir
+COPY app.py /app
+# Was: COPY . /app - but I don't want anything but app.py in here.
+# Google Cloud example uses: ADD . /app but really COPY is better.
+# ADD also just does copy but really is more for downloading and or untarring
+# files into the container. COPY is explicit and is simly just a COPY.
 
+# Would this be better, as in more explicit? Is COPY . copying everything?
+# We don't want or neede everything from this dir in the container.
+#COPY app.py /app
 
-WORKDIR /app
-#RUN pip install -r requirements.txt  # From earlier version, not using layer caching
-#ENTRYPOINT ["python"]  # From earlier version
+EXPOSE 80
 
-#CMD ["app.py"]  # From earlier version
-CMD ["gunicorn", "-w 4", "main:app"]
+# CMD format which includes the ENTRYPOINT as the first argument
+#CMD ["python", "app.py"]
+# Or ENTRYPOINT can independently specify the executable and then CMD just
+# specifies the arguments to pass.
 
+ENTRYPOINT ["python"]
+CMD ["app.py"]
+# Equivalent to: CMD ["python", "app.py"]
 
-# python:3.7-alpine is a minimal container, so we can keep the image size down
-# Alpine ncludes a minimal POSIX environment. Note that by default Alpine uses musl instead of glibc
-# so some Python wheels won't work without forcing a recompilation.
+# TODO: Determine whether or not this image allows calling 'python3' for
+# python3 since this is what I am used to on my Mac which has v2 and v3
+# together. It is more explicit and what my eye is used to. Since it is a
+# Python 3 image, it might only have 'python' which is ok too.
+# TODO: Try: ENTRYPOINT ["python3"]
 
-# If we just used: RUN pip install -r requirements.txt
-# then every time we change source code and rebuild the container, the dependencies will be re-downloaded
-# and re-installed. In order to take advantage of layer caching, we instead do this:
-# COPY requirements.txt /
-# RUN pip install -r /requirements.txt
+# BUILD:
+# docker build -t flask-hello-world .
 
-# gunicorn - Python WSGI HTTP server for UNIX, obviously must come as part of Alpine.
-
-# TODO: Does Apline support using uwsgi, nginx and flask together?
-
-# To test:
-# docker build -t simple-flask-app2:latest .
+# MISC NOTES:
 # docker run -d -p 5000:5000 simple-flask-app2
 
-##
-#
- 
