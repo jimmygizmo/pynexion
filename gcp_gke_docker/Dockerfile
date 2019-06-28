@@ -48,6 +48,15 @@ CMD ["app.py"]
 # BUILD:
 # docker build -t flask-hello-world .
 
-# MISC NOTES:
-# docker run -d -p 5000:5000 simple-flask-app2
+# HOW THE VSCODE DOCKER PLUGIN RAN THIS SUCCESSFULLY AFTER THIS BUILD:
+# docker run --rm -d -p 80:80/tcp flask-hello-world:latest
+
+# See: https://cloud.google.com/container-registry/docs/quickstart
+
+# docker tag flask-hello-world gcr.io/lunar-inn-244506/flask-hello-world:tag1
+
+# docker push gcr.io/lunar-inn-244506/flask-hello-world:tag1
+
+# To avoid possibly incurring charges for the container storage:
+# gcloud container images delete gcr.io/[PROJECT-ID]/quickstart-image:tag1 --force-delete-tags
 

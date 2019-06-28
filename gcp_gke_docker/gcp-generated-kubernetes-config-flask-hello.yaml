@@ -1,0 +1,41 @@
+---
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "flask-hello-world-1"
+  namespace: "default"
+  labels:
+    app: "flask-hello-world-1"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "flask-hello-world-1"
+  template:
+    metadata:
+      labels:
+        app: "flask-hello-world-1"
+    spec:
+      containers:
+      - name: "flask-hello-world"
+        image: "gcr.io/lunar-inn-244506/flask-hello-world:tag1"
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "flask-hello-world-1-hpa"
+  namespace: "default"
+  labels:
+    app: "flask-hello-world-1"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "flask-hello-world-1"
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
