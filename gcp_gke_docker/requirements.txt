@@ -1,5 +1,6 @@
 Flask==1.0.3
-#Flask-Admin==1.5.3
-#flask-restplus==0.12.1
-#Flask-SSLify==0.1.5
-#gunicorn==19.9.0
+Flask-Admin==1.5.3
+flask-restplus==0.12.1
+Flask-SSLify==0.1.5
+gunicorn==19.9.0
+python-dotenv==0.10.3
