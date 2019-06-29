@@ -1,20 +1,19 @@
 ---
-apiVersion: "extensions/v1beta1"
+apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "flask-hello-world-1"
-  namespace: "default"
+  name: "flask-hello-world"
   labels:
-    app: "flask-hello-world-1"
+    app: "flask-hello-world"
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: "flask-hello-world-1"
+      app: "flask-hello-world"
   template:
     metadata:
       labels:
-        app: "flask-hello-world-1"
+        app: "flask-hello-world"
     spec:
       containers:
       - name: "flask-hello-world"
@@ -25,15 +24,11 @@ spec:
 apiVersion: "v1"
 kind: "Service"
 metadata:
-  name: "flask-hello-world-1-service"
-  namespace: "default"
-  labels:
-    app: "flask-hello-world-1"
+  name: "flask-hello-world"
 spec:
+  selector:
+    app: "flask-hello-world"
   ports:
   - protocol: "TCP"
     port: 80
     targetPort: 80
-  selector:
-    app: "flask-hello-world-1"
-  type: "NodePort"

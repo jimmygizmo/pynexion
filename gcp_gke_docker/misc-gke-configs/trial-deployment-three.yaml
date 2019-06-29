@@ -1,0 +1,57 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: 2019-06-29T06:51:11Z
+  generation: 1
+  labels:
+    app: flask
+  name: flask
+  namespace: default
+  resourceVersion: "1469957"
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/flask
+  uid: 47e5a4cb-9a3a-11e9-87a9-42010a8a01b9
+spec:
+  progressDeadlineSeconds: 2147483647
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: flask
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: flask
+    spec:
+      containers:
+      - image: gcr.io/lunar-inn-244506/flask-hello-world@sha256:f726dfee5140073f8e5a6c9c82e5be632a0054637200509d0f24509a6bd96561
+        imagePullPolicy: IfNotPresent
+        name: flask-hello-world-sha256
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 3
+  conditions:
+  - lastTransitionTime: 2019-06-29T06:51:13Z
+    lastUpdateTime: 2019-06-29T06:51:13Z
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  observedGeneration: 1
+  readyReplicas: 3
+  replicas: 3
+  updatedReplicas: 3
