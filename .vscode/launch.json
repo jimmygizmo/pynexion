@@ -7,12 +7,12 @@
 
 
         {
-            "name": "Python: Current File",
+            "name": "rest_one flask",
             "type": "python",
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "app.py"
+                "FLASK_APP": "rest_one/app.py"
             },
             "args": [
                 "run",
