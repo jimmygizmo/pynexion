@@ -1,11 +1,13 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
+const schema = require('./schema/schema');
 
 const app = express();
 
 //app.use('/graphql', graphqlHTTP({  OPTIONS-GO-HERE  }));
 app.use('/graphql', graphqlHTTP({
-    // TBD
+    // In ES6 "schema: schema" can be shortened to just "schema"
+    schema
 }));
 
 

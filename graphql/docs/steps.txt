@@ -16,4 +16,9 @@ INSTALL graphql, express-graphql
 npm install graphql
 npm install express-graphql
 
+NEXT we need to pass the schema as an option to graphqlHTTP init.
+inside dir server/, mkdir schema
+new file schema.js in here
+
+
 
