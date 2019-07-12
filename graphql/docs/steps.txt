@@ -20,5 +20,11 @@ NEXT we need to pass the schema as an option to graphqlHTTP init.
 inside dir server/, mkdir schema
 new file schema.js in here
 
+SCHEMA is in place in code but we need to dummy up a resolve() using an array and
+we will use lodash to simplify accessing the dummy data (array)
+npm install lodash
+Now need to test it so need to use graphiqal tool. It is invoked in the middleware app.use attributes,
+
+
 
 

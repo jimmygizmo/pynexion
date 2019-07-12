@@ -7,7 +7,8 @@ const app = express();
 //app.use('/graphql', graphqlHTTP({  OPTIONS-GO-HERE  }));
 app.use('/graphql', graphqlHTTP({
     // In ES6 "schema: schema" can be shortened to just "schema"
-    schema
+    schema,
+    graphiql: true
 }));
 
 
