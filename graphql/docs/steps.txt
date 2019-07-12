@@ -1,0 +1,19 @@
+cd ...../project/graphql
+mkdir server
+cd server
+npm init - enter to all questions is fine
+
+npm install express
+* Created a .gitignore for node projects
+START editing server/app.js
+With respect to the callback function for app.listen, an ES6 function is just () => {}
+
+RUN: node app
+BETTER: Install nodemon, THEN CAN: nodemon app
+SO: npm install nodemon -g (globally not just for this project)
+
+INSTALL graphql, express-graphql
+npm install graphql
+npm install express-graphql
+
+

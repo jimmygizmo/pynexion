@@ -1,0 +1,11 @@
+
+graphqlHTTP const name is just a convention for using express-graphql
+express-graphql allows express to understand graphql and provides a simple way to create an express server which runs the graphql API.
+How?
+We use it as middle-ware on a single route and this route will be like an endpoint to interact with our graphql data.
+
+We will have one supercharged endpoint to rule them all (as compared to REST with potentially many many endpoints)
+We will send all graphql queries to this endpoint.
+
+
+

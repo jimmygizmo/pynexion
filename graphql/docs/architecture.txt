@@ -1,0 +1,33 @@
+
+
+
+CLIENT (Browser)
+React App
+Appollo (sort of the glue layer for graphql - enables react to use graphql)
+
+
+
+SERVER (Node.js)
+Express App (Minimalist web application framework)
+GraphQL Server (Manages data retreival and manipulation)
+- Where we will describe the data types and their relationships of the graph
+= The various entry points into the graph and what information it offers
+
+
+
+DATABASE
+MongoDB (hosted on MLab)
+- Where data will be stored
+
+
+---------
+GraphQL can just as easily be used with Angular or Vue. (Unsure if Appollo would be used for all tho)
+
+
+---------
+Graphiql is a tool, a dummy front-end to make queries during dev/test.
+Pronounced 'graphical'.
+In this tutorial, it is served up from the same Express server.
+
+
+

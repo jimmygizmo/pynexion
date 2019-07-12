@@ -1,0 +1,25 @@
+
+
+{
+  books{
+    name
+    genre
+    id
+  }
+}
+
+
+
+{
+  books{
+    name
+    genre
+    author{
+      name
+      age
+    }
+  }
+}
+
+
+
