@@ -4,7 +4,12 @@ const _ = require('lodash');
 // The below syntax is called 'destructuring' and sort of grabs the object
 // GraphQLObjectType in the curly brackets out of the namespace, graphql in
 // this case. Seems similar to Python's: from module import ClassName
-const {GraphQLObjectType, GraphQLString, GraphQLSchema} = graphql;
+const {
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLSchema,
+    GraphQLID
+} = graphql;
 
 // test data to use prior to implementing MongoDB
 var books = [
@@ -16,7 +21,7 @@ var books = [
 const BookType = new GraphQLObjectType({
     name: 'Book',
     fields: () => ({
-        id: {type: GraphQLString},
+        id: {type: GraphQLID},
         name: {type: GraphQLString},
         genre: {type: GraphQLString}
     })
@@ -27,8 +32,13 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         book: {
             type: BookType,
-            args: {id: {type: GraphQLString}},
+            args: {id: {type: GraphQLID}},
             resolve(parent, args){
+                // Shows that args.id is always string at this point which
+                // is the type stored in the array we run _.find against.
+                // TODO: Clarify exactly how that works. In video this is at
+                // 1:02-1:03.
+                //console.log(typeof(args.id))
                 return _.find(books, {id: args.id});
             }
         }

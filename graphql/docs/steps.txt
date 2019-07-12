@@ -25,6 +25,8 @@ we will use lodash to simplify accessing the dummy data (array)
 npm install lodash
 Now need to test it so need to use graphiqal tool. It is invoked in the middleware app.use attributes,
 
+GraphQLID is more flexible than GraphQLString for id purposes. Then we can use an int OR a string.
+
 
 
 
