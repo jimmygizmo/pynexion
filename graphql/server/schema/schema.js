@@ -9,14 +9,18 @@ const {
     GraphQLString,
     GraphQLSchema,
     GraphQLID,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLList
 } = graphql;
 
 // test data to use prior to implementing MongoDB
 var books = [
-    {name: 'Book Title 1', genre: 'Fantasy', id: '1'},
-    {name: 'Book Title 2', genre: 'Fantasy', id: '2'},
-    {name: 'Book Title 3', genre: 'Sci-Fi', id: '3'},
+    {name: 'Book Title 1', genre: 'Fantasy', id: '1', authorid: '1'},
+    {name: 'Book Title 2', genre: 'Fantasy', id: '2', authorid: '2'},
+    {name: 'Book Title 3', genre: 'Sci-Fi', id: '3', authorid: '3'},
+    {name: 'Book Title 4', genre: 'Fantasy', id: '1', authorid: '2'},
+    {name: 'Book Title 5', genre: 'Fantasy', id: '2', authorid: '3'},
+    {name: 'Book Title 6', genre: 'Fantasy', id: '3', authorid: '3'},
 ];
 
 var authors = [
@@ -30,7 +34,15 @@ const BookType = new GraphQLObjectType({
     fields: () => ({
         id: {type: GraphQLID},
         name: {type: GraphQLString},
-        genre: {type: GraphQLString}
+        genre: {type: GraphQLString},
+        author: {
+            type: AuthorType,
+            resolve(parent, args){
+                console.log(parent);
+                return _.find(authors, {id: parent.authorid});
+
+            }
+        }
     })
 });
 
@@ -39,7 +51,14 @@ const AuthorType = new GraphQLObjectType({
     fields: () => ({
         id: {type: GraphQLID},
         name: {type: GraphQLString},
-        age: {type: GraphQLInt}
+        age: {type: GraphQLInt},
+        books: {
+            type: new GraphQLList(BookType),
+            resolve(parent, args){
+                return _.filter(books, {authorid: parent.id})
+            }
+            ////////////////////////
+        }
     })
 });
 
