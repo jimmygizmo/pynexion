@@ -12,14 +12,23 @@ const app = express();
 const dbpass = process.env.REACT_APP_DB_PASS;
 const dbuser = process.env.REACT_APP_DB_USER;
 const dbhost = process.env.REACT_APP_DB_HOST;
+const dbname = process.env.REACT_APP_DB_NAME;
+const dboptions = process.env.REACT_APP_DB_OPTIONS;
 
+// Port numbers not accepted when using connection string format mongodb+srv.
+// Note that docs confusingly say that when using useNewUrlParset: true, port
+// numbers are require but this must apply to some other conn string format
+// beacuse I got an error when adding port number (27017) which is the port
+// number I see being used by compass.
 var connstr = 'mongodb+srv://';
 connstr += dbuser + ':' + dbpass;
 connstr += '@' + dbhost;
-connstr += '/test?retryWrites=true&w=majority';
+connstr += '/' + dbname + dboptions;
 //console.log(connstr);
 
-mongoose.connect(connstr);
+//Mongoose connect: Current URL string parser is deprecated and will be remved
+// so start using the new one now with this option: { useNewUrlParser: true }
+mongoose.connect(connstr,{ useNewUrlParser: true });
 mongoose.connection.once('open', () => {
     console.log('connected to DB');
 })

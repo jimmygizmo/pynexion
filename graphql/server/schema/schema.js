@@ -15,22 +15,6 @@ const {
     GraphQLList
 } = graphql;
 
-// test data to use prior to implementing MongoDB
-// var books = [
-//     {name: 'Book Title 1', genre: 'Fantasy', id: '1', authorid: '1'},
-//     {name: 'Book Title 2', genre: 'Fantasy', id: '2', authorid: '2'},
-//     {name: 'Book Title 3', genre: 'Sci-Fi', id: '3', authorid: '3'},
-//     {name: 'Book Title 4', genre: 'Fantasy', id: '1', authorid: '2'},
-//     {name: 'Book Title 5', genre: 'Fantasy', id: '2', authorid: '3'},
-//     {name: 'Book Title 6', genre: 'Fantasy', id: '3', authorid: '3'},
-// ];
-
-// var authors = [
-//     {name: 'Bob Jamonevitch', age: 44, id: '1'},
-//     {name: 'Melvin McGill', age: 42, id: '2'},
-//     {name: 'Larry Boonsmith', age: 66, id: '3'},
-// ];
-
 const BookType = new GraphQLObjectType({
     name: 'Book',
     fields: () => ({
