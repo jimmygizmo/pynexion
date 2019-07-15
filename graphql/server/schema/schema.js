@@ -1,8 +1,8 @@
 const graphql = require('graphql');
 const _ = require('lodash');
 
-// The below syntax is called 'destructuring' and sort of grabs the object
-// GraphQLObjectType in the curly brackets out of the namespace, graphql in
+// The below syntax is called 'destructuring' and sort of grabs the various
+// objects in the curly brackets out of the namespace, graphql in
 // this case. Seems similar to Python's: from module import ClassName
 const {
     GraphQLObjectType,
@@ -55,7 +55,7 @@ const AuthorType = new GraphQLObjectType({
         books: {
             type: new GraphQLList(BookType),
             resolve(parent, args){
-                return _.filter(books, {authorid: parent.id})
+                return _.filter(books, {authorid: parent.id});
             }
             ////////////////////////
         }
@@ -88,6 +88,18 @@ const RootQuery = new GraphQLObjectType({
             args: {id: {type: GraphQLID}},
             resolve(parent, args){
                 return _.find(authors, {id: args.id});
+            }
+        },
+        books: {
+            type: new GraphQLList(BookType),
+            resolve(parent, args){
+                return books;
+            }
+        },
+        authors: {
+            type: new GraphQLList(AuthorType),
+            resolve(parent, args){
+                return authors;
             }
         }
     }
