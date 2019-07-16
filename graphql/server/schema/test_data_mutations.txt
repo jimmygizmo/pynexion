@@ -23,11 +23,47 @@ mutation {
 }
 
 
-BOOKS:
+BOOKS:  * CHANGE IDs TO MATCH THOSE IN YOUR DATABASE AFTER CREATING AUTHORS *
 
+mutation {
+  addBook(name: "The Name of the Wind", genre: "Fantasy", authorid: "5d2d03d62c7a196d1b837094"){
+    name
+    genre
+  }
+}
 
+mutation {
+  addBook(name: "The Final Empire", genre: "Fantasy", authorid: "5d2d03f02c7a196d1b837095"){
+    name
+    genre
+  }
+}
 
+mutation {
+  addBook(name: "The Long Earth", genre: "Sci-Fi", authorid: "5d2d03f92c7a196d1b837096"){
+    name
+    genre
+  }
+}
 
+mutation {
+  addBook(name: "The Hero of Ages", genre: "Fantasy", authorid: "5d2d03f02c7a196d1b837095"){
+    name
+    genre
+  }
+}
 
+mutation {
+  addBook(name: "The Colour of Magic", genre: "Fantasy", authorid: "5d2d03f92c7a196d1b837096"){
+    name
+    genre
+  }
+}
 
+mutation {
+  addBook(name: "The Light Fantasies", genre: "Fantasy", authorid: "5d2d03f92c7a196d1b837096"){
+    name
+    genre
+  }
+}
 
