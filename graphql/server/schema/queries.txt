@@ -1,0 +1,90 @@
+
+-------------------------
+ALL BOOKS, no author info
+
+{
+	books {
+    id
+    name
+    genre
+  }
+}
+
+
+-------------------------
+ALL AUTHORS, no book info
+
+{
+	authors {
+    id
+    name
+    age
+  }
+}
+
+
+--------------------------------------------
+ALL BOOKS WITH FULL AUTHOR INFO (one to one)
+
+{
+	books {
+    id
+    name
+    genre
+    author {
+      id
+      name
+      age
+    }
+  }
+}
+
+
+---------------------------------------------
+ALL AUTHORS WITH FULL BOOK INFO (one to many)
+
+{
+	authors {
+    id
+    name
+    age
+    books {
+      id
+      name
+      genre
+    }
+  }
+}
+
+------------------------------------------------------
+SPECIFIC BOOK BY ID WITH FULL AUTHOR INFO (one to one)
+
+{
+	book(id: "5d2d0f54eddc656f404fa9ea") {
+    id
+    name
+    genre
+    author {
+      id
+      name
+      age
+    }
+  }
+}
+
+-------------------------------------------------------
+SPECIFIC AUTHOR BY ID WITH FULL BOOK INFO (one to many)
+
+{
+	author(id: "5d2d03d62c7a196d1b837094") {
+    id
+    name
+    age
+    books {
+      id
+      name
+      genre
+    }
+  }
+}
+
