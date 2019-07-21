@@ -1,8 +1,29 @@
 body {
   background: #eee;
   font-family: "Nunito", "Arial", sans-serif;
+  font-weight: 400;
+
 }
-/* https://fonts.google.com/specimen/Nunito?selection.family=Nunito */
+
+h1 {
+  font-family: "Nunito", "Arial", sans-serif;
+  font-weight: 600;
+ }
+
+/* https://fonts.google.com/specimen/Nunito?selection.family=Nunito
+Enabled by a font stylesheet link in the head of index.html:
+<link href="https://fonts.googleapis.com/css?family=Nunito:400,600&display=swap" rel="stylesheet">
+Both Nunito and Nunito SemiBold work because of this link.
+The link which only enables Nunito was this:
+<link href="https://fonts.googleapis.com/css?family=Nunito&display=swap" rel="stylesheet">
+YOU NEED TO SELECT THE VARIATIONS YOU WANT AT GOOLGE BEFORE GENERATING THE
+FONT LINK.
+font-family of "Nunito SemiBold" not working. Also font-weight: 600 not working.
+Can only get normal Nunito to work even though link is as provided by Google to
+allow both 400/600 = Normal/Semi-Bold. FIXED! Had to specify the 600 for h1
+specifically.
+Overall, what I had to do is a lot different than the tutorial.
+*/
 
 /*
 body {

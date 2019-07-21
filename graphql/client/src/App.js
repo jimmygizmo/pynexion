@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div id="main">
-      <h1>Book Store</h1>
-    </div>
-  );
+class App extends Component {
+    render() {
+        return (
+            <div id="main">
+                <h1>Book Store</h1>
+            </div>
+        );
+    }
 }
 
-export default App;
+export default App
+
