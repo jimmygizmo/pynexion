@@ -49,7 +49,15 @@ npm install graphql
 
 npm install apollo-boost
 GOOD. NO PROBLEMS WITH ANY OF THESE.
-
 --------------------
+
+apollo graphql requests occurring but hitting CORS 305.
+need to modify graphql server to allow cross-origin
+NOW WORKING BACK IN SERVER:
+npm install cors
+
+
+
+
 
 

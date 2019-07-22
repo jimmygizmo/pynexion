@@ -2,12 +2,17 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const schema = require('./schema/schema');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // Initial usage of dotenv - Do we have any reason for a const var here?
+// Simply requiring works fine as initially implemented.
 require('dotenv').config();
 //console.log(process.env);
 
 const app = express();
+
+// Allow cross-origin requests
+app.use(cors());
 
 const dbpass = process.env.REACT_APP_DB_PASS;
 const dbuser = process.env.REACT_APP_DB_USER;
