@@ -18,15 +18,30 @@ const getBooksQuery = gql`
 
 
 class BookList extends Component {
+
+    displayBooks(){
+        var data = this.props.data;
+        if (data.loading) {
+            return( <div>Loading books...</div> );
+        } else {
+            return data.books.map(book => {
+                return(
+                    <li key={ book.id }>{book.name}</li>
+                );
+            });
+        }
+    }
+
     render() {
         // To show the binding to graphql/getBooksQuery of this component:
         // The graphql data we need for the component will now be stored in
         // this components props because of the binding we did below at export.
-        console.log(this.props);
+        //console.log(this.props);
+
         return (
             <div id="main">
                 <ul id="book-list">
-                    <li>Book Name</li>
+                    { this.displayBooks() }
                 </ul>
             </div>
         );
