@@ -28,5 +28,28 @@ Now need to test it so need to use graphiqal tool. It is invoked in the middlewa
 GraphQLID is more flexible than GraphQLString for id purposes. Then we can use an int OR a string.
 
 
+**** SKIPPED SOME STEPS HERE. MAYBE ADD IN LATER. ****
+
+Now working on React client app.
+Basic react parent and booklist component are now stubbed out and rendering.
+Time to install stuff for Apollo graphql client. Will not install apollo-boost
+bundle. Better to see the individual installs.
+This has a few packages that the tutorial does not hint at. And the tutorial
+just installs apollo-boost .. which actually I will also do at the end in case
+it also does some configuration I need to more easily follow the tutorial.
+
+npm install apollo-client
+npm install apollo-cache-inmemory
+npm install apollo-link-http
+npm install apollo-link-error
+npm install apollo-link
+npm install graphql-tag
+npm install react-apollo
+npm install graphql
+
+npm install apollo-boost
+GOOD. NO PROBLEMS WITH ANY OF THESE.
+
+--------------------
 
 
