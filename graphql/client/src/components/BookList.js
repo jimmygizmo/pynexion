@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
 
-// CORS: Is preventing the connection from the page running at localhost:3000
-// to fetch at the graphql server running at localhost:4000
-// Perhaps we need to add a header: Access-Control-Allow-Origin
-// 405 error to that internal request
-
 const getBooksQuery = gql`
     {
         books {
@@ -26,14 +21,14 @@ class BookList extends Component {
         } else {
             return data.books.map(book => {
                 return(
-                    <li key={ book.id }>{book.name}</li>
+                    <li key={book.id}>{book.name}</li>
                 );
             });
         }
     }
 
     render() {
-        // To show the binding to graphql/getBooksQuery of this component:
+        // Log to show the binding to graphql/getBooksQuery of this component:
         // The graphql data we need for the component will now be stored in
         // this components props because of the binding we did below at export.
         //console.log(this.props);
@@ -41,16 +36,15 @@ class BookList extends Component {
         return (
             <div id="main">
                 <ul id="book-list">
-                    { this.displayBooks() }
+                    {this.displayBooks()}
                 </ul>
             </div>
         );
     }
+
 }
 
 export default graphql(getBooksQuery)(BookList);
-
-
 
 
 /*
