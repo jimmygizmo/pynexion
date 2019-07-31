@@ -15,6 +15,17 @@ class AddBook extends Component {
         }
     }
 
+    // Tried to set state directly with this.state =, but got a warning,
+    // advising I must use setState like so. It is only OK to set the state
+    // directly in the constructor as above.
+    clearFormState(){
+        this.setState({
+            name: "",
+            genre: "",
+            authorid: ""
+        });
+    }
+
     displayAuthors(){
         var data = this.props.getAuthorsQuery
         //console.log(this.props);
@@ -40,10 +51,20 @@ class AddBook extends Component {
             },
             refetchQueries: [{query: getBooksQuery}]
         });
+        // FAILED - Tried to clear form after a successful book addition by
+        // calling my new clearFormState method here, but it did not work and
+        // if you notice, it is re-fetching the query and thus re-rendering
+        // immediately after the mutation. And so the form is still populated
+        // with the recent data. We need another way. Wondering if there is a
+        // way to do it in the middle of the addBookMutation steps above. This
+        // mutation is doing the re-fetch as a built-in feature at the end of
+        // mutation so I have no idea how to get in the middle of that. There
+        // must be some other way.
+        // this.clearFormState();
     }
 
     render() {
-        //console.log(this.props);
+        console.log(this.props);
 
         return (
             <form id="add-book" onSubmit={ this.submitForm.bind(this)}>

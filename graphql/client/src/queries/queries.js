@@ -20,6 +20,9 @@ const getAuthorsQuery = gql`
     }
 `
 
+// Query variables:
+// Note the exclamation point on the end of GraphQL data types. This ! means
+// that these variables must not be null. ! means not null, required.
 
 const addBookMutation = gql`
     mutation($name: String!, $genre: String!, $authorid: ID!) {
@@ -29,6 +32,10 @@ const addBookMutation = gql`
         }
     }
 `
+
+// Mutations can be optionally named. Like this:
+//mutation AddBook(vars in here)
+// For now the above mutation will remain unnamed.
 
 export { getAuthorsQuery, getBooksQuery, addBookMutation };
 
