@@ -37,5 +37,25 @@ const addBookMutation = gql`
 //mutation AddBook(vars in here)
 // For now the above mutation will remain unnamed.
 
-export { getAuthorsQuery, getBooksQuery, addBookMutation };
+
+const getBookQuery = gql`
+    query($id: ID) {
+        book(id: $id) {
+            id
+            name
+            genre
+            author {
+                id
+                name
+                age
+                books {
+                    name
+                    id
+                }
+            }
+        }
+    }
+`
+
+export { getAuthorsQuery, getBooksQuery, addBookMutation, getBookQuery };
 
