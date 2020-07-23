@@ -1,0 +1,40 @@
+# Updated as of July 23, 2020
+
+# Successfully installed Jinja2-2.11.2 MarkupSafe-1.1.1 Werkzeug-0.16.0 aniso8601-8.0.0 attrs-19.3.0
+# click-7.1.2 flask-1.1.2 flask-restplus-0.13.0 itsdangerous-1.1.0 jsonschema-3.2.0 pyrsistent-0.16.0 pytz-2020.1
+
+aniso8601==8.0.0
+attrs==19.3.0
+click==7.1.2
+Flask==1.1.2
+flask-restplus==0.13.0
+itsdangerous==1.1.0
+Jinja2==2.11.2
+jsonschema==3.2.0
+MarkupSafe==1.1.1
+pyrsistent==0.16.0
+pytz==2020.1
+Werkzeug==0.16.0
+
+
+# For reference, when comparing this file to output from 'pip freeze', note the following came with Ubuntu 20.04
+# certifi==2019.11.28
+# chardet==3.0.4
+# dbus-python==1.2.16
+# distro-info===0.23ubuntu1
+# idna==2.8
+# PyGObject==3.36.0
+# python-apt==2.0.0
+# requests==2.22.0
+# requests-unixsocket==0.2.0
+# six==1.14.0
+# unattended-upgrades==0.1
+# urllib3==1.25.8
+#
+# Additionally, the following module was installed from the apt supervisor package
+# supervisor==4.1.0
+
+
+##
+#
+

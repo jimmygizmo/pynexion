@@ -1,0 +1,19 @@
+
+# As of July 23, 2020, this canonical requirements file results in the following:
+# Successfully installed Jinja2-2.11.2 MarkupSafe-1.1.1 Werkzeug-0.16.0 aniso8601-8.0.0 attrs-19.3.0
+# click-7.1.2 flask-1.1.2 flask-restplus-0.13.0 itsdangerous-1.1.0 jsonschema-3.2.0 pyrsistent-0.16.0 pytz-2020.1
+
+flask
+
+flask-restplus
+
+# This version-pinned Werzeug is a bug fix to allow flask-restplus install to work because Werkzeug 1.0.1 and 1.0.1
+# both break many modules such as the recent flask-restplus versions. Still not fixed as of July 23, 2020.
+Werkzeug==0.16.0
+
+#Flask-SQLAlchemy
+
+
+##
+#
+

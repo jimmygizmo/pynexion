@@ -22,8 +22,9 @@ RUN apt-get -y install curl
 # Fix tzdata interactive region prompt during install of software-properties-common
 # Recently there is a problem where during this install at the point tzdata was just installed and
 # is being configured using dpkg/debconf steps, where there will be an interactive prompt about the
-# general "Region" to use. Setting this environment variable should fix this for this and possibly
-# other similar situations.
+# general "Region" to use. Setting this environment variable should fix this and is a good setting
+# to have for any Dockerfile built for a debian-derived Linux image. No step in a Dockerfile can involve
+# an interactive prompt requiring user input, whether or not they can time out automatically, which most cannot.
 ARG DEBIAN_FRONTEND=noninteractive
 
 
@@ -34,7 +35,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y install software-properties-common
 
 
-# Obtain LSB details which may be needed for a full Postgres install or other common installs.
+# Obtain LSB details which may be needed for many common installs, such as for a full Postgres install for example.
 # Make note of the "codename" in the output which may be important for some installs.
 # This command comes included with software-properties-common, which is why it is run here.
 RUN lsb_release -a
@@ -43,8 +44,12 @@ RUN lsb_release -a
 # Here is where we would install Python, but as of Ubuntu 20.04 you already get the latest
 # Python 3 version of 3.8.2, the same as apt-get install python3.8 would provide, so no
 # separate Python install is needed here, however, for future use, the steps to be used are
-# below, currently disabled. Some of the comments below are good to keep for future use under
-# newer versions, but are not currently relevant since the OS includes the latest Python.
+# below, currently disabled. # TODO: Rewrite some of the following:
+# As recently as Ubuntu 18.04, you had to install Python separately and there were
+# other Python installations coming from other installs, which caused some issues that needed fixes. It appears most
+# of these issues have been resolved with the now-included Python and other newer packages. Some of the comments
+# below are good to keep for future use under newer versions, but are not currently relevant since
+# the OS includes the latest Python.
 
 
 # As a prerequisite to installing Python, we must add a repository
@@ -105,6 +110,7 @@ RUN pip freeze
 
 # This ubuntu-supplied Python installation does have some modules already installed, obviously for use by the OS or
 # other OS-included packages. The following is the baseline to be aware of:
+#
 # certifi==2019.11.28
 # chardet==3.0.4
 # dbus-python==1.2.16
@@ -136,6 +142,9 @@ RUN apt-get -y install supervisor
 # Hopefully all these problems are gone now, but this will not be known until we fully setup and run supervisord:
 # TODO: Configure and run supervisor and make sure past issues are resolved,
 # otherwise some fix steps may be needed here.
+# NOTE: This apt package will also install the (supervisor==4.1.0) Python module into
+# the site-local the OS-included Python environment.
+# The source of all resulting Python modules is also detailed below.
 
 
 # Remove the default debian nginx config which allows the serving of files from /var/www/html
@@ -144,10 +153,63 @@ RUN apt-get -y install supervisor
 # TODO: Enable this step later when we set up Nginx properly.
 
 
+# Create the main directory where most of the stuff for the REST Service will live
+RUN mkdir /var/www/service
 
 
+# Copy in the python requirements file
+# This will be the requirements file with the pinned versions, not the unpinned canonical requirements file.
+COPY ./service-requirements.txt /var/www/service/service-requirements.txt
 
 
+# Install Python dependencies
+RUN pip install -r /var/www/service/service-requirements.txt
+
+
+# TODO: Rewrite these comments
+# Show the pip freeze output at this point - then note which entries came from where since we had some in place
+# already that came with Ubuntu and then at least one that apparently came with supervisor
+RUN pip freeze
+# Current pip freeze output - showing SOURCE of install:
+#
+# REQUIREMENTS: # aniso8601==8.0.0
+# REQUIREMENTS: # attrs==19.3.0
+#       UBUNTU: # certifi==2019.11.28
+#       UBUNTU: # chardet==3.0.4
+# REQUIREMENTS: # click==7.1.2
+#       UBUNTU: # dbus-python==1.2.16
+#       UBUNTU: # distro-info===0.23ubuntu1
+# REQUIREMENTS: # Flask==1.1.2
+# REQUIREMENTS: # flask-restplus==0.13.0
+#       UBUNTU: # idna==2.8
+# REQUIREMENTS: # itsdangerous==1.1.0
+# REQUIREMENTS: # Jinja2==2.11.2
+# REQUIREMENTS: # jsonschema==3.2.0
+# REQUIREMENTS: # MarkupSafe==1.1.1
+#       UBUNTU: # PyGObject==3.36.0
+# REQUIREMENTS: # pyrsistent==0.16.0
+#       UBUNTU: # python-apt==2.0.0
+# REQUIREMENTS: # pytz==2020.1
+#       UBUNTU: # requests==2.22.0
+#       UBUNTU: # requests-unixsocket==0.2.0
+#       UBUNTU: # six==1.14.0
+# * SUPERVISOR: # supervisor==4.1.0
+#       UBUNTU: # unattended-upgrades==0.1
+#       UBUNTU: # urllib3==1.25.8
+# REQUIREMENTS: # Werkzeug==0.16.0
+
+# The above module list was validated for the sources of the modules and it can be seen that 12 of these
+# came with the OS (Ubuntu 20.04) and 12 came as a result of the Python requirements.txt file, with one
+# coming from the apt supervisor install, marked with (*).
+
+
+# xxxxxxxxx
+
+COPY ./api.py /var/www/service/api.py
+
+EXPOSE 5000
+
+CMD ["python", "/var/www/service/api.py"]
 
 ##
 #
