@@ -1,0 +1,154 @@
+# Ubuntu 20.04 is the latest LTS release as of the date of this Dockerfile: July 22, 2020
+FROM ubuntu:20.04
+
+
+# OS version details
+RUN uname -a
+
+
+# Update apt package information from all configured sources.
+RUN apt-get -y update
+
+
+# Install git.
+# Git may be needed for some pip and source-code-built installs.
+RUN apt-get -y install git
+
+
+# Install curl for development, testing and troubleshooting
+RUN apt-get -y install curl
+
+
+# Fix tzdata interactive region prompt during install of software-properties-common
+# Recently there is a problem where during this install at the point tzdata was just installed and
+# is being configured using dpkg/debconf steps, where there will be an interactive prompt about the
+# general "Region" to use. Setting this environment variable should fix this for this and possibly
+# other similar situations.
+ARG DEBIAN_FRONTEND=noninteractive
+
+
+# The following dependency install of software-properties-common
+# is needed because it includes the apt-add-repository command which we run in a following step,
+# but software-properties-common may also be needed for other installs as it a common dependency.
+# This adds additional package repository management commands, among other things.
+RUN apt-get -y install software-properties-common
+
+
+# Obtain LSB details which may be needed for a full Postgres install or other common installs.
+# Make note of the "codename" in the output which may be important for some installs.
+# This command comes included with software-properties-common, which is why it is run here.
+RUN lsb_release -a
+
+
+# Here is where we would install Python, but as of Ubuntu 20.04 you already get the latest
+# Python 3 version of 3.8.2, the same as apt-get install python3.8 would provide, so no
+# separate Python install is needed here, however, for future use, the steps to be used are
+# below, currently disabled. Some of the comments below are good to keep for future use under
+# newer versions, but are not currently relevant since the OS includes the latest Python.
+
+
+# As a prerequisite to installing Python, we must add a repository
+####RUN add-apt-repository -y ppa:deadsnakes/ppa  # NOT NEEDED UNDER UBUNTU 20.04
+
+
+# NOTE: Be aware that an apt repository could provide a later subversion without notice.
+# NOTE: This install only pins to the major version of 3.8 but does not pin the subversion.
+# TODO: Look for a way to pin the exact subversion of Python 3.8.
+# NOTE: apt is giving us 3.8.2 currently but the latest supported by Pyenv is 3.8.3 which would be our
+# preferred choice. In fact, from Python.org, the latest available as of a few days ago is 3.8.5.
+# RUN apt-cache policy python3  # Shows specifics of installed package and is supposed to show the
+# available options but for options, always seems to show the same as what is installed.
+# Install whatever 3.8 subversion apt is currently giving us:
+####RUN apt-get -y install python3.8  # NOT NEEDED UNDER UBUNTU 20.04
+
+
+# RELATED TO PYTHON CONCERNS: Recently there was a conflict cause by a Python 3.6 which was installed
+# prior to here by the install of software-properties-common which under Ubuntu 18.04 would install
+# this additional Python 3.6 version of it's own which would cause a conflict with the python-pip3
+# install that would come later. Still should keep an eye out for this issue or similar issues since
+# we might have to install python-pip3.
+# TODO: Update the above comment once it is seen there is no longer a pip3 conflict.
+
+
+# Install pip3
+# We will want 'pip' symlinked to the pip3 binary as well as 'python' symlinked to the 'python3.8' binary.
+# In code, we will use shebangs that simply specify "/usr/bin/env python" etc. and will assume we are always
+# aligned to a very recent version of Python 3 for all Python code.
+RUN apt-get install -y python3-pip
+
+
+# Create symlinks for 'pip' and 'python' to point to the binaries for 'pip3' and 'python3.8'
+# Nothing currently exists for either planned symlink name so no removal steps are needed. The situation
+# has been differnet for earlier versions of ubuntu, python, pip and software-properties-common which
+# required a different approach to solve different issues. Now under unbuntu 20.04 and Python 3.8.2 included with
+# it and the newer software-properties-common, the situation is better/cleaner.
+RUN ln -s /usr/bin/python3.8 /usr/bin/python
+RUN ln -s /usr/bin/pip3 /usr/bin/pip
+# TODO: Consider making the 'python' symlink earlier on, before the pip install, and doing these symlinks in
+# separate steps, with appriate comments near each step. Since the pip install involves python itself, it seems more
+# logical to put the 'python' symlink in place before anything related to python is done, although it probably does
+# not matter, it seems more correct to do it that way.
+
+
+# Upgrade setuptools and pip
+RUN pip install --upgrade setuptools
+# Version upgrade was 45.2.0 -> 49.2.0
+RUN pip install --upgrade pip
+# Version upgrade was 20.0.2 -> 20.1.1
+
+
+# Explicitly show which python and pip versions are installed and also what, if any modules are installed at this
+# point, prior to customizing our Python environment any further:
+RUN python -V
+RUN pip -V
+RUN pip freeze
+
+# This ubuntu-supplied Python installation does have some modules already installed, obviously for use by the OS or
+# other OS-included packages. The following is the baseline to be aware of:
+# certifi==2019.11.28
+# chardet==3.0.4
+# dbus-python==1.2.16
+# distro-info===0.23ubuntu1
+# idna==2.8
+# PyGObject==3.36.0
+# python-apt==2.0.0
+# requests==2.22.0
+# requests-unixsocket==0.2.0
+# six==1.14.0
+# unattended-upgrades==0.1
+# urllib3==1.25.8
+
+
+# Install Nginx as our reverse-proxy layer in front of the actual web service.
+# TODO: This will be installed, but initially not configured and not used as we will start out with just Flask
+# serving directly. TODO: Later, configure Nginx appopriately, add it to startup control etc.
+RUN apt-get -y install nginx
+RUN nginx -v
+# Current version we get is: 1.18.0
+
+
+# Install supervisor
+# TODO: Under Ubunto 18.04 there was a lot more than just this step needed, so we will see.
+RUN apt-get -y install supervisor
+# Since /usr/bin/supervisord does exist, it seems that past issues with the supervisor/supervisord install from
+# apt may have been fixed in Ubuntu 20.04. Previously it was necessary to do an additional source install and then
+# there was also a python 2 install included that caused a separate issue requiring an rm and a symlink fix.
+# Hopefully all these problems are gone now, but this will not be known until we fully setup and run supervisord:
+# TODO: Configure and run supervisor and make sure past issues are resolved,
+# otherwise some fix steps may be needed here.
+
+
+# Remove the default debian nginx config which allows the serving of files from /var/www/html
+# This removes the symlink pointing to: /etc/nginx/sites-available/default
+####RUN rm /etc/nginx/sites-enabled/default
+# TODO: Enable this step later when we set up Nginx properly.
+
+
+
+
+
+
+
+##
+#
+
