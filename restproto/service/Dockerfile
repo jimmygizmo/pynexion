@@ -53,7 +53,7 @@ RUN lsb_release -a
 
 
 # As a prerequisite to installing Python, we must add a repository
-####RUN add-apt-repository -y ppa:deadsnakes/ppa  # NOT NEEDED UNDER UBUNTU 20.04
+#### RUN add-apt-repository -y ppa:deadsnakes/ppa  # NOT NEEDED UNDER UBUNTU 20.04
 
 
 # NOTE: Be aware that an apt repository could provide a later subversion without notice.
@@ -64,7 +64,7 @@ RUN lsb_release -a
 # RUN apt-cache policy python3  # Shows specifics of installed package and is supposed to show the
 # available options but for options, always seems to show the same as what is installed.
 # Install whatever 3.8 subversion apt is currently giving us:
-####RUN apt-get -y install python3.8  # NOT NEEDED UNDER UBUNTU 20.04
+#### RUN apt-get -y install python3.8  # NOT NEEDED UNDER UBUNTU 20.04
 
 
 # RELATED TO PYTHON CONCERNS: Recently there was a conflict cause by a Python 3.6 which was installed
@@ -134,22 +134,15 @@ RUN nginx -v
 
 
 # Install supervisor
-# TODO: Under Ubunto 18.04 there was a lot more than just this step needed, so we will see.
 RUN apt-get -y install supervisor
-# Since /usr/bin/supervisord does exist, it seems that past issues with the supervisor/supervisord install from
-# apt may have been fixed in Ubuntu 20.04. Previously it was necessary to do an additional source install and then
-# there was also a python 2 install included that caused a separate issue requiring an rm and a symlink fix.
-# Hopefully all these problems are gone now, but this will not be known until we fully setup and run supervisord:
-# TODO: Configure and run supervisor and make sure past issues are resolved,
-# otherwise some fix steps may be needed here.
+# Current version we get is 4.1.0
 # NOTE: This apt package will also install the (supervisor==4.1.0) Python module into
 # the site-local the OS-included Python environment.
-# The source of all resulting Python modules is also detailed below.
 
 
 # Remove the default debian nginx config which allows the serving of files from /var/www/html
 # This removes the symlink pointing to: /etc/nginx/sites-available/default
-####RUN rm /etc/nginx/sites-enabled/default
+#### RUN rm /etc/nginx/sites-enabled/default
 # TODO: Enable this step later when we set up Nginx properly.
 
 
@@ -157,9 +150,14 @@ RUN apt-get -y install supervisor
 RUN mkdir /var/www/service
 
 
-# Copy in the python requirements file
+# Copy in the Python requirements file
 # This will be the requirements file with the pinned versions, not the unpinned canonical requirements file.
 COPY ./service-requirements.txt /var/www/service/service-requirements.txt
+# NOTE: Occasionally, upgrades of all versions should be done and part of that process requires working with the
+# canonical-service-requirements.txt file, so this normally disable command can be used at those times:
+#### COPY ./canonical-service-requirements.txt /var/www/service/service-requirements.txt
+# When this upgrading work is done and new versions test good, then 'pip freeze' should again be used to create a
+# fresh (version-pinned) service-requirments.txt file. Don't forget to address special versions pinned for bug fixes!
 
 
 # Install Python dependencies
@@ -203,13 +201,25 @@ RUN pip freeze
 # coming from the apt supervisor install, marked with (*).
 
 
-# xxxxxxxxx
+# Copy the supervisor configuration file in and then symlink it from it's active location to there.
+# This keeps things nicely organized in a central place.
+COPY ./supervisor/supervisord.conf /var/www/service/supervisor/supervisord.conf
+RUN ln -s /var/www/service/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-COPY ./api.py /var/www/service/api.py
 
+# Copy the application files into place
+COPY ./app.py /var/www/service/app.py
+
+# Explose the port the Flask app is listening on. 5000 is Flask default.
 EXPOSE 5000
 
-CMD ["python", "/var/www/service/api.py"]
+# Start app without using supervisor
+# Disabled, but kept here since it can be useful for testing and it illustrates the Flask entry point
+#### CMD ["python", "/var/www/service/app.py"]
+
+# Start supervisor, which will manage starting, auto-restarting the app, etc. according to configuration settings
+CMD ["/usr/bin/supervisord"]
+
 
 ##
 #

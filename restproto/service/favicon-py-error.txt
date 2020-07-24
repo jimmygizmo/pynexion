@@ -1,5 +1,27 @@
 Intersting python error occurs in the app when a browser does it's built-in favicon.ico request:
 
+This is becuse we have no code to handle when the URL patterns don't match exactly. The URL of this request matches the route pattern for the ToDo() handlerenough to arrive there at line 19. That route is very general:
+@api.route('/<string:todo_id>')
+
+Actually Flask-RESTplus is creating a nice HTML page for the 500 error that is thrown. 
+Headers show:
+500
+INTERNAL SERVER ERROR
+
+Looks nice in the browser.
+Shows the stack trace nicely, with some formatting controls in the page.
+
+Our REST app will take a planned strategy for when some or all of the URL does not make sense.
+
+Regarding the HTTP status code/codes we will use for solving problems like this:
+Obviously the 400 class means:
+"Client sent an invalid request."
+404 is actually the closest literal description.
+It might be desireble to actually serve a favicon.ico file in this case and this could be handled at the Nginx level and Flask might never even need to see the /favicon.ico request at all as it would be intercepted and served by Nginx, however I am sure Flask could also serve it.
+Since Flask-RESTplus provides the nice web app features for Swagger/OpenAPI and errors for browsers to use, we should be serviing a favicon.ico, but we of course need a general solution of different ways the URL will not match.
+It seems like we should throw an HTTP 404 in all cases.
+
+
 172.17.0.1 - - [23/Jul/2020 10:02:32] "GET /swagger.json HTTP/1.1" 200 -
 172.17.0.1 - - [23/Jul/2020 10:02:38] "GET /hello HTTP/1.1" 200 -
 172.17.0.1 - - [23/Jul/2020 10:02:43] "GET /favicon.ico HTTP/1.1" 500 -
