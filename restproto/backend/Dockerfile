@@ -147,17 +147,17 @@ RUN apt-get -y install supervisor
 
 
 # Create the main directory where most of the stuff for the REST Service will live
-RUN mkdir /var/www/service
+########RUN mkdir /var/www/service
 
 
 # Create temporary placeholder directory - example docker volume to share data outside container
 RUN mkdir /var/www/datavolume
-RUN date > /var/www/datavolume/test-file-created-by-service-Dockerfile.txt
+RUN date > /var/www/datavolume/test-file-created-by-backend-Dockerfile.txt
 
 
 # Copy in the Python requirements file
 # This will be the requirements file with the pinned versions, not the unpinned canonical requirements file.
-COPY ./service-requirements.txt /var/www/service/service-requirements.txt
+########COPY ./service-requirements.txt /var/www/service/service-requirements.txt
 # NOTE: Occasionally, upgrades of all versions should be done and part of that process requires working with the
 # canonical-service-requirements.txt file, so this normally disable command can be used at those times:
 #### COPY ./canonical-service-requirements.txt /var/www/service/service-requirements.txt
@@ -166,7 +166,7 @@ COPY ./service-requirements.txt /var/www/service/service-requirements.txt
 
 
 # Install Python dependencies
-RUN pip install -r /var/www/service/service-requirements.txt
+########RUN pip install -r /var/www/service/service-requirements.txt
 
 
 # TODO: Rewrite these comments
@@ -208,22 +208,22 @@ RUN pip freeze
 
 # Copy the supervisor configuration file in and then symlink it from it's active location to there.
 # This keeps things nicely organized in a central place.
-COPY ./supervisor/supervisord.conf /var/www/service/supervisor/supervisord.conf
-RUN ln -s /var/www/service/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+########COPY ./supervisor/supervisord.conf /var/www/service/supervisor/supervisord.conf
+########RUN ln -s /var/www/service/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
 # Copy the application files into place
-COPY ./app.py /var/www/service/app.py
+########COPY ./app.py /var/www/service/app.py
 
 # Explose the port the Flask app is listening on. 5000 is Flask default.
-EXPOSE 5000
+########EXPOSE 5000
 
 # Start app without using supervisor
 # Disabled, but kept here since it can be useful for testing and it illustrates the Flask entry point
 #### CMD ["python", "/var/www/service/app.py"]
 
 # Start supervisor, which will manage starting, auto-restarting the app, etc.
-CMD ["/usr/bin/supervisord"]
+########CMD ["/usr/bin/supervisord"]
 
 
 ##

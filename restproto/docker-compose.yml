@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: postgresdb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      PGDATA: /var/lib/postgresql/data
+    build:
+      context: postgres
+      dockerfile: Dockerfile
+    ports:
+    - "5432:5432"
+    volumes:
+    - datavolume:/var/lib/postgresql/data
+
+  pgadmin:
+    environment:
+      PGADMIN_DEFAULT_EMAIL: username@domain.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+    build:
+      context: pgadmin
+      dockerfile: Dockerfile
+    ports:
+    - "5555:80"
+    #volumes:
+    #- datavolume:/datavolume
+
+  service:
+    build:
+      context: service
+      dockerfile: Dockerfile
+    ports:
+    - "7777:5000"
+    volumes:
+    - datavolume:/var/www/datavolume
+
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    volumes:
+    - datavolume:/var/www/datavolume
+
+volumes:
+  datavolume: {}
+
+

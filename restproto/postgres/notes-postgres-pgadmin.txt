@@ -1,0 +1,3 @@
+https://info.crunchydata.com/blog/easy-postgresql-12-and-pgadmin-4-setup-with-docker
+
+

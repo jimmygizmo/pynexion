@@ -1,0 +1,17 @@
+The backend is likely where Python maintenance processes will be run. It may eventually have its own
+REST api to control such processes. For now it simply has a Dockerfile, based off the same one used
+by the 'service' container as it is a good Ubuntu Dockerfile for general Python support. Here we have
+simply commented out the few parts at the end specific to the 'service' Flask app.
+
+Anything commented out in this way was done so using eight pund signs, like:
+########
+
+If you re-enable the lines commented out like that, you will basically have the 'service' Dockerfile.
+
+This will all change soon when both the 'service' Dockerfile is evolved further and/or when a proper
+Dockerfile is made specifically for 'backend'.
+
+
+##
+#
+

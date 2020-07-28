@@ -1,0 +1,24 @@
+One image with 50MM pulls is available at - this seems like the most official image:
+https://hub.docker.com/r/dpage/pgadmin4/
+
+Docs for this image:
+https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+
+----------
+
+In this startup example, we use the -p option (necessary on MacOS) and since this pgadmin4 container listens
+on port 80 (which we don't want to bind to on the Mac) we map this outside the contiainer to port 5555.o
+
+<CONTAINER_ID> is obtained from the output of the build process. Of course, there are other ways to do this.
+
+Startup example:
+docker run -p 5555:80 -e PGADMIN_DEFAULT_EMAIL=username@domain.com -e PGADMIN_DEFAULT_PASSWORD=secret <CONTAINER_ID>
+
+Then you can open the app in your browser at http://localhost:5555
+
+----------
+
+
+##
+#
+
