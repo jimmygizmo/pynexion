@@ -1,3 +1,13 @@
 https://github.com/docker-library/postgres/issues/263
 
+Can successfully run and connect to postgres when started up as a single container just using docker like this:
+docker run -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=secret -p 5432:5432 8a2170ab8d1c
+
+But when attempting docker-compose up, we are getting this error:
+
+postgres_1  | initdb: error: directory "/var/lib/postgresql/data" exists but is not empty
+postgres_1  | If you want to create a new database system, either remove or empty
+postgres_1  | the directory "/var/lib/postgresql/data" or run initdb
+postgres_1  | with an argument other than "/var/lib/postgresql/data".
+
 
