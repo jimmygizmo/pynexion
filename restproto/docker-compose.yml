@@ -10,37 +10,39 @@ services:
       context: postgres
       dockerfile: Dockerfile
     ports:
-    - "5432:5432"
+      - "0.0.0.0:5432:5432"
+#    expose:
+#      - "5432"
     volumes:
-    - datavolume:/var/lib/postgresql/data
-
-  pgadmin:
-    environment:
-      PGADMIN_DEFAULT_EMAIL: username@domain.com
-      PGADMIN_DEFAULT_PASSWORD: secret
-    build:
-      context: pgadmin
-      dockerfile: Dockerfile
-    ports:
-    - "5555:80"
-    #volumes:
-    #- datavolume:/datavolume
+      - datavolume:/var/lib/postgresql/data
+#
+#  pgadmin:
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: username@domain.com
+#      PGADMIN_DEFAULT_PASSWORD: secret
+#    build:
+#      context: pgadmin
+#      dockerfile: Dockerfile
+#    ports:
+#      - "5555:80"
+#    #volumes:
+#      #- datavolume:/datavolume
 
   service:
     build:
       context: service
       dockerfile: Dockerfile
     ports:
-    - "7777:5000"
+      - "7777:5000"
     volumes:
-    - datavolume:/var/www/datavolume
+      - datavolume:/var/www/datavolume
 
   backend:
     build:
       context: backend
       dockerfile: Dockerfile
     volumes:
-    - datavolume:/var/www/datavolume
+      - datavolume:/var/www/datavolume
 
 volumes:
   datavolume: {}

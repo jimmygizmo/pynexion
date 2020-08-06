@@ -1,3 +1,21 @@
 https://info.crunchydata.com/blog/easy-postgresql-12-and-pgadmin-4-setup-with-docker
 
+For my main GUI DB client/tool I use DataGrip from Jet Brains/IntelliJ. I also use their PyCharm IDE a lot.
+While setting up new Postgres data source in DataGrip, I selected to download the recommended driver in the Driver/Data Source settings. It looked like DG had detected that I had no driver yet or the default was now out of date. Within a few seconds the info went from red to green and it showed a new version. I assume it is one of the most recent versions.
+DataGrip Postgres driver: ver. 42.2.5  -  org.postgresql.Driver  -  (Java, I assume.)
+
+- - - -
+
+To start the Postgres DB in a singele standalone container, for example to perform local dev work using DataGrip or a similar tool or to run parts of the Tariff Fingerprint application against the DB, without using the docker-compose setup, do the following.
+
+1. cd into the /postgres/ subdirectory and do a docker build if necessary, noting the final image ID or tag used.
+
+2. Run the following command, which will use the standard local dev user and password:
+
+docker run -e POSTGRES_PASSWORD=admin -e POSTGRES_PASSWORD=secret -p 5432:5432 <IMAGE_ID>
+
+<IMAGE_ID> is obtained from your build output or is a standard tag you used during the build.
+
+3. You should now be able to connect to the DB at the host of 'localhost' or 127.0.0.1 and the specs from above.
+
 
