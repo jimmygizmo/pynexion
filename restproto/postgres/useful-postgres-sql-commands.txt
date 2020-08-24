@@ -1,0 +1,42 @@
+-- Useful Postgres SQL Commands
+
+
+-- Create the application database. This is required before the application can
+-- be run since the application specifies the table in the connection string.
+CREATE DATABASE appdb;
+
+
+-- Create a typical table: widgets
+CREATE TABLE IF NOT EXISTS widgets (
+   id SERIAL PRIMARY KEY,
+   created TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+   name VARCHAR(128),
+   power NUMERIC,
+   type VARCHAR(32)
+);
+
+
+-- Show a list of tables in the current database and some meta information about them.
+-- This does not show column definitions.
+SELECT * FROM pg_catalog.pg_tables
+WHERE schemaname != 'pg_catalog' AND
+    schemaname != 'information_schema';
+
+
+-- Inspect data in a table:
+SELECT COUNT(id) FROM widgets;
+SELECT * FROM widgets;
+
+
+-- Show all Postgres variables
+SHOW ALL;
+
+
+-- Rename a table:
+ALTER TABLE IF EXISTS widgets RENAME TO widgetsnew;
+
+
+-- Show details about the columns of a table.
+SELECT table_name, column_name, data_type FROM information_schema.columns
+WHERE table_name = 'widgets';
+

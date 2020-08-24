@@ -1,8 +1,18 @@
 from flask import Flask, request
-from flask_restplus import Resource, Api
+from flask_restplus import Api, Resource
 
 app = Flask(__name__)
-api = Api(app)
+
+authorizations = {'apikey-user': {'type': 'apiKey',
+                                  'in': 'header',
+                                  'name': 'X-API-KEY'},
+                  'apikey-admin': {'type': 'apiKey',
+                                  'in': 'header',
+                                  'name': 'X-API-KEY'}
+                  }
+
+api = Api(app, authorizations=authorizations)
+
 
 @api.route('/hello')
 class HelloWorld(Resource):
