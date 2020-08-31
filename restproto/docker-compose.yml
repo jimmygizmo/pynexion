@@ -1,3 +1,8 @@
+# Docker compose is used for your local development work and that is how this file is designed.
+# When you deploy your application using a cloud service provider such as GCP/GKE or AWS, containers will be
+# configured in the manner most appropriate for that cloud/container platform. On GCP/GKE, this is done with the
+# Kubernetes config map via the kubectl command.
+
 version: '3.8'
 services:
   postgres:
@@ -10,41 +15,51 @@ services:
       context: postgres
       dockerfile: Dockerfile
     ports:
-      - "0.0.0.0:5432:5432"
-#    expose:
-#      - "5432"
+      - "5432:5432"
     volumes:
-      - datavolume:/var/lib/postgresql/data
-#
-#  pgadmin:
-#    environment:
-#      PGADMIN_DEFAULT_EMAIL: username@domain.com
-#      PGADMIN_DEFAULT_PASSWORD: secret
-#    build:
-#      context: pgadmin
-#      dockerfile: Dockerfile
-#    ports:
-#      - "5555:80"
-#    #volumes:
-#      #- datavolume:/datavolume
+      - ./dbvolume:/var/lib/postgresql/data
+
+  pgadmin:
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+    build:
+      context: pgadmin
+      dockerfile: Dockerfile
+    ports:
+      - "5555:80"
+      #volumes:
+      #- datavolume:/datavolume
+    depends_on:
+      - "postgres"
 
   service:
+    env_file: ./service/.env
     build:
       context: service
       dockerfile: Dockerfile
     ports:
       - "7777:5000"
     volumes:
-      - datavolume:/var/www/datavolume
+      - ./datavolume:/var/www/datavolume
+    depends_on:
+      - "postgres"
+    command: ["/var/www/service/wait-for-it.sh", "postgres:5432", "--", "/usr/bin/supervisord"]
 
   backend:
+    # .env will load most configuration, which can work for running in virtual envs, local or standalone containers,
+    # but for running in docker-compose, we need the following 'environment:' section to override POSTGRES_HOST.
+    env_file: ./backend/.env
+    environment:
+      POSTGRES_HOST: postgres
     build:
       context: backend
       dockerfile: Dockerfile
     volumes:
       - datavolume:/var/www/datavolume
+    depends_on:
+      - "postgres"
+    command: [ "/var/www/backend/wait-for-it.sh", "postgres:5432", "--", "/usr/bin/supervisord" ]
 
 volumes:
   datavolume: {}
-
-

@@ -3,8 +3,3 @@ The Postgress database data files will be stored here. Other data and configurat
 of the app may be stored here. At a later point, if it makes sense, separate volumes will be used for distinct
 purposes, but to get started, just this single volume should be sufficient. The main goal is to persist data, but
 a secondary purpose is to allow filesystem data sharing between running containers.
-
-
-##
-#
-

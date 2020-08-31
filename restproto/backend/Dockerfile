@@ -222,10 +222,14 @@ RUN pip freeze
 # Disabled, but kept here since it can be useful for testing and it illustrates the Flask entry point
 #### CMD ["python", "/var/www/service/app.py"]
 
+
+# For docker-compose execution, 'postgres' must be up and acceptiing connections before 'backend' comes up
+# and attempts to connect and run. The wait-for-it.sh script will be run by docker-compose and will be passed
+# arguments such that once it detects postgres port 5432 is accepting connections, it will then launch supervisord,
+# which will bring the app up.
+COPY ./wait-for-it.sh /var/www/backend/wait-for-it.sh
+RUN chmod o+x /var/www/backend/wait-for-it.sh
+
+
 # Start supervisor, which will manage starting, auto-restarting the app, etc.
 ########CMD ["/usr/bin/supervisord"]
-
-
-##
-#
-
