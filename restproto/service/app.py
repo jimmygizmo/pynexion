@@ -1,5 +1,14 @@
+#! /usr/bin/env python
+
+import datetime
+
 from flask import Flask, request
 from flask_restplus import Api, Resource
+
+from app import config
+
+print("/app.py started. initializing.")
+
 
 app = Flask(__name__)
 

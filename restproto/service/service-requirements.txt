@@ -1,23 +1,27 @@
-# Updated as of July 23, 2020
-
-# Successfully installed Jinja2-2.11.2 MarkupSafe-1.1.1 Werkzeug-0.16.0 aniso8601-8.0.0 attrs-19.3.0
-# click-7.1.2 flask-1.1.2 flask-restplus-0.13.0 itsdangerous-1.1.0 jsonschema-3.2.0 pyrsistent-0.16.0 pytz-2020.1
+# Updated as of September 1, 2020
 
 aniso8601==8.0.0
-attrs==19.3.0
+attrs==20.1.0
 click==7.1.2
 Flask==1.1.2
 flask-restplus==0.13.0
+flask-restplus-sqlalchemy==0.0.3
+Flask-SQLAlchemy==2.4.4
 itsdangerous==1.1.0
 Jinja2==2.11.2
 jsonschema==3.2.0
 MarkupSafe==1.1.1
+psycopg2-binary==2.8.5
 pyrsistent==0.16.0
+python-dotenv==0.14.0
 pytz==2020.1
+six==1.15.0
+SQLAlchemy==1.3.19
 Werkzeug==0.16.0
 
 
-# For reference, when comparing this file to output from 'pip freeze', note the following came with Ubuntu 20.04
+# Regarding Docker/docker-compose builds using the Python built into Ubunto 20.04:
+# For reference, when comparing this file to output from 'pip freeze', note the following comes with Ubuntu 20.04
 # certifi==2019.11.28
 # chardet==3.0.4
 # dbus-python==1.2.16
@@ -31,10 +35,5 @@ Werkzeug==0.16.0
 # unattended-upgrades==0.1
 # urllib3==1.25.8
 #
-# Additionally, the following module was installed from the apt supervisor package
+# Additionally, the following module is installed by the apt supervisor package
 # supervisor==4.1.0
-
-
-##
-#
-

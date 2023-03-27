@@ -34,7 +34,11 @@ services:
       - "postgres"
 
   service:
+    # .env will load most configuration, which can work for running in virtual envs, local or standalone containers,
+    # but for running in docker-compose, we need the following 'environment:' section to override POSTGRES_HOST.
     env_file: ./service/.env
+    environment:
+      POSTGRES_HOST: postgres
     build:
       context: service
       dockerfile: Dockerfile

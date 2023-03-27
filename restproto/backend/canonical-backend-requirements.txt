@@ -1,0 +1,2 @@
+# Canonical requirements file for app component/container: backend
+
